@@ -4,7 +4,7 @@ const authRoute= express();
 
 authRoute.post('/auth/register', (req, res)=>{
     res.json({
-        result: "any",
+        result: "Successfully called",
         message: "sucess call",
         meta: null,
     })

@@ -97,7 +97,33 @@ Blog/Reviews
 
 Postman
 Insomia
+thunder clinet extension
+postman extension
+Documentation
+    -swagger
 
+
+// response.send("Hello world");
+    // response.end()
+    // response.render()
+    // response.download()
+    // response.status().json()
+    // response.sendStatus()
+
+// app.post()
+// app.put()
+// app.patch()
+// app.delete()
+// 404 Route
+// 200 response
+// validation call
+    //fail ===>400, 422
+// Error page
+    //fail ===>404
+// Authentication
+    //fail ===>401
+// Authorization
+    //fail ===>403
 
 # Middleware
 -route ===> A --->B --->c--->D====>Response
