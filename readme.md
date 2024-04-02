@@ -129,7 +129,7 @@ Documentation
 -route ===> A --->B --->c--->D====>Response
 -(req: REquest, res: Response, next: NextFunction)
     //req.params
-    //req.calue
+    //req.value
     next()
     res.json()
 (req, res, next)
