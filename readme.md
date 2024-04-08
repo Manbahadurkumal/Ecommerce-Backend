@@ -135,3 +135,22 @@ Documentation
 (req, res, next)
     //req.manipulate
     next()
+
+sending payload 
+Reveiveing Payload
+
+
+CORS 
+    =>Cross Origin Reference Site
+        --> FE (domain)
+            --abc.com
+        -->BE(domain)
+            --api.abc.com
+                abc.com:portno
+
+yup==>FE
+ajv
+zod
+joi==>BE
+regex password validation
+joi validation error

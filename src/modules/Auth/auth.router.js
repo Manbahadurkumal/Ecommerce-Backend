@@ -1,101 +1,106 @@
 
 const authRoute= require('express').Router();
-const authCtrl = require("./auth.controller")
-// expressapp ====> Mount ===>Middleware
-// request manipulate
-// 
-authRoute.post('/register', (req, res, next)=>{
-    //data receive client
+const authCtrl = require("./auth.controller");
+const {bodyValidator} = require ('../../middleware/validator.middleware')
+const {registerDTO} = require("./auth.dto")
+const {setPath, uploader} = require("../../middleware/uploader.middleware")
+authRoute.post('/register',setPath('users'), uploader.single('image'), bodyValidator(registerDTO), authCtrl.register)
+authRoute.post('/login', authCtrl.login)
+// // expressapp ====> Mount ===>Middleware
+// // request manipulate
+// // 
+// authRoute.post('/register', (req, res, next)=>{
+//     //data receive client
         
-        //db store
-            //response register
-    const data = 
-    {
-        name: "Manish",
-        email: "mk9307888@gmail.com",
-        role: "admin",
-        password: "admin123"
-    };
-    if(!data){
-        //error response
-        next({code: 422, data:{name: "Name is required", email: "Email is required", password: "Password required", role: "Role is required"}})
-    }else{
-        //validate
-        if(!data.name){
-            next({code: 422,message:"Validation Failed", data:{name: "Name is required"}})
-            // res.status(422).json({
-            //     result:{
-            //         name: "Name is required",
+//         //db store
+//             //response register
+//     const data = 
+//     {
+//         name: "Manish",
+//         email: "mk9307888@gmail.com",
+//         role: "admin",
+//         password: "admin123"
+//     };
+//     if(!data){
+//         //error response
+//         next({code: 422, data:{name: "Name is required", email: "Email is required", password: "Password required", role: "Role is required"}})
+//     }else{
+//         //validate
+//         if(!data.name){
+//             next({code: 422,message:"Validation Failed", data:{name: "Name is required"}})
+//             // res.status(422).json({
+//             //     result:{
+//             //         name: "Name is required",
 
-            //     },
-            //     message: "validation Failed",
-            //     meta: null
-            // })
-        }
-        if(!data.email){
-            next({code: 422,message:"Validation Failed", data:{email: "email is required"}})
+//             //     },
+//             //     message: "validation Failed",
+//             //     meta: null
+//             // })
+//         }
+//         if(!data.email){
+//             next({code: 422,message:"Validation Failed", data:{email: "email is required"}})
             
-            // res.status(422).json({
-            //     result:{
-            //         email: "Email is required",
-            //     },
-            //     message: "validation Failed",
-            //     meta: null
-            // })
+//             // res.status(422).json({
+//             //     result:{
+//             //         email: "Email is required",
+//             //     },
+//             //     message: "validation Failed",
+//             //     meta: null
+//             // })
             
-        }
-        if(!data.password){
-            next({code: 422,message:"Validation Failed", data:{password: "Password is required"}})
-            // res.status(422).json({
-            //     result:{
-            //         password: "password is required",
-            //     },
-            //     message: "validation Failed",
-            //     meta: null
-            // })
-        }
-        if(!data.role){
-            next({code: 422,message:"Validation Failed", data:{role: "role is required"}})
+//         }
+//         if(!data.password){
+//             next({code: 422,message:"Validation Failed", data:{password: "Password is required"}})
+//             // res.status(422).json({
+//             //     result:{
+//             //         password: "password is required",
+//             //     },
+//             //     message: "validation Failed",
+//             //     meta: null
+//             // })
+//         }
+//         if(!data.role){
+//             next({code: 422,message:"Validation Failed", data:{role: "role is required"}})
 
-            // res.status(422).json({
-            //     result:{
-            //     role: "Role is required",
-            //     },
-            //     message: "validation Failed",
-            //     meta: null
-            // })
-        };
-    }
-        const registeredUser = {
-            _id: "123abc",
-            name: "Manish",
-            email: "mk9307888@gmail.com",
-            password: "admin123",
-            role: "admin"
-        };
-        if(registeredUser){
-            //sucess
-            res.json({
-                result: registeredUser,
-                message: "sucess",
-                meta: null
-            })
-        }else{
-            next({code: 400, message: "Sorry! Cannot create a user"})
-            // res.status(400).json({
-            //     result: null,
-            //     message: "User cannot register",
-            //     meta: null
-            // })
-        }
+//             // res.status(422).json({
+//             //     result:{
+//             //     role: "Role is required",
+//             //     },
+//             //     message: "validation Failed",
+//             //     meta: null
+//             // })
+//         };
+//     }
+//         const registeredUser = {
+//             _id: "123abc",
+//             name: "Manish",
+//             email: "mk9307888@gmail.com",
+//             password: "admin123",
+//             role: "admin"
+//         };
+//         if(registeredUser){
+//             //sucess
+//             res.json({
+//                 result: registeredUser,
+//                 message: "sucess",
+//                 meta: null
+//             })
+//         }else{
+//             next({code: 400, message: "Sorry! Cannot create a user"})
+//             // res.status(400).json({
+//             //     result: null,
+//             //     message: "User cannot register",
+//             //     meta: null
+//             // })
+//         }
     
     
     
-})
-authRoute.get('/:token/activate', (req, res)=>{
-    // register logic
-        //email user action token
-})
+// })
+// authRoute.get('/:token/activate', (req, res)=>{
+//     // register logic
+//         //email user action token
+// })
 
 
 // //Testing router

@@ -1,8 +1,23 @@
-const express = require('express')
+const express = require('express');
+const helmet = require("helmet")
+const cors = require("cors")
 const app = express();
+app.use(helmet())
+app.use(cors())
+const joi = require("joi")
 const mainRoute = require("./routing.config")
 const router = express.Router()
-app.get('health', (req, res, next)=>{
+//throttle 
+//sanitization =>helmet
+//body parser
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+}))
+
+//static middleware
+app.use('/assets', express.static('./public/images'))
+app.get('/health', (req, res, next)=>{
     //res.end("hello")
     res.json({
         result: "hello there",
@@ -20,9 +35,21 @@ app.use((request, response, next)=>{
 })
 // Error handling middleware
 app.use((error, req, res, next)=>{
-    const statusCode = error.code || 500; //internal server error
-    const data = error.data || null;
-    const msg = error.message || "Internal server error";
+    let statusCode = error.code || 500; //internal server error
+    let data = error.data || null;
+    let msg = error.message || "Internal server error";
+
+    if(error instanceof joi.ValidationError){
+    //format error
+    statusCode = 422;
+    msg = "Validation Failed"
+    data = {};
+    const errorDetail = error.details
+    if(Array.isArray(errorDetail)){
+        errorDetail.map((errorObj)=>{
+            data[errorObj.context.label] = errorObj.message
+        })}
+    }
     //error response
     res.status(statusCode).json({          
         //error code 422 ==> pass object in result
