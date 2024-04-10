@@ -5,6 +5,7 @@ const {bodyValidator} = require ('../../middleware/validator.middleware')
 const {registerDTO} = require("./auth.dto")
 const {setPath, uploader} = require("../../middleware/uploader.middleware")
 authRoute.post('/register',setPath('users'), uploader.single('image'), bodyValidator(registerDTO), authCtrl.register)
+authRoute.get("/activate", authCtrl.activate)
 authRoute.post('/login', authCtrl.login)
 // // expressapp ====> Mount ===>Middleware
 // // request manipulate

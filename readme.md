@@ -154,3 +154,33 @@ zod
 joi==>BE
 regex password validation
 joi validation error
+
+
+Register Data
+    -->name, email, password, role, image
+        -->store this on db
+            -->User has to activate the account via email
+
+SMTP
+    ==>smtp, pop3, imap
+    smtp ===>25 blocked ISP, 2525, 587, 465
+
+        gmail, live, custom domain
+
+sender
+ NOde app =====> SMTP server ===> Queue build ===>Reveiver Mail
+
+ Test
+ sending domain verify ==>hosting live
+    Node app ====> Smtp server ===>Queue build ===>Fake make reveiver
+
+Host    ===>gmail
+User    ===>gmail address
+Password    ===>gmail pwd
+
+
+
+## Database
+
+Mongodb Server(Community)
+MOngodb Shell()
