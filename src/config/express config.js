@@ -1,4 +1,5 @@
 const express = require('express');
+require("./db.config");
 const helmet = require("helmet")
 const cors = require("cors")
 const app = express();

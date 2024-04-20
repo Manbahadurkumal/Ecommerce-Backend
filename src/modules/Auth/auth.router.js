@@ -2,11 +2,14 @@
 const authRoute= require('express').Router();
 const authCtrl = require("./auth.controller");
 const {bodyValidator} = require ('../../middleware/validator.middleware')
-const {registerDTO} = require("./auth.dto")
+const {registerDTO, loginDTO} = require("./auth.dto")
 const {setPath, uploader} = require("../../middleware/uploader.middleware")
+
+
 authRoute.post('/register',setPath('users'), uploader.single('image'), bodyValidator(registerDTO), authCtrl.register)
-authRoute.get("/activate", authCtrl.activate)
-authRoute.post('/login', authCtrl.login)
+authRoute.get("/activate/:token", authCtrl.activate)
+authRoute.post('/login', bodyValidator(loginDTO), authCtrl.login)
+authRoute.get('/me', authCtrl.getLoggedIn)
 // // expressapp ====> Mount ===>Middleware
 // // request manipulate
 // // 

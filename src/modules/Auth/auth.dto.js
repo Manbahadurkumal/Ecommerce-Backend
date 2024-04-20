@@ -7,5 +7,8 @@ const registerDTO = joi.object({
     confirmPassword: joi.string().valid(joi.ref('password')).required(),
     role: joi.string().pattern(/^(seller|customer|admin)$/)
 })
-
-module.exports = {registerDTO}
+const loginDTO = joi.object({
+    email: joi.string().email().required(),
+    password: joi.string().required()
+})
+module.exports = {registerDTO, loginDTO}
