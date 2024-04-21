@@ -4,6 +4,9 @@ const mailSvc = require('../../services/mail.service')
 const authSvc = require('./auth.service')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
+//token verification
+
 class AuthController{   
     register = async(req, res, next)=>{
         try{
@@ -38,7 +41,7 @@ class AuthController{
         }
         
     }
-    login = async (req, res, next)=>{
+    login = async    (req, res, next)=>{
         try{
             const { email, password} = req.body;
             const userDetail = await authSvc.findOneUser({
@@ -53,7 +56,7 @@ class AuthController{
                 //password match
                 if(userDetail.status !== 'active'){
                     //user is not activated
-                    throw {code: 400, message: "your account has not been activated"}
+                    throw {code: 400, message: "your account has not been activated. Please activate or contact administration."}
                 }
 
                 //user is active
@@ -89,7 +92,7 @@ class AuthController{
             }
 
         }catch(exception){
-            throw exception
+            next(exception)
         }
     }
 
@@ -116,6 +119,28 @@ class AuthController{
         }
     }
     getLoggedIn = async(req, res, next)=>{
+        //verify the user login or not
+        try{
+            const loggedInUser = req.authUser;
+            const response = {
+                _id: loggedInUser._id,
+        name: loggedInUser.name,
+        email: loggedInUser.email,
+        role: loggedInUser.role,
+        
+        status: loggedInUser.status,
+        image: loggedInUser?.image,
+        
+        __v: 0
+            }
+            res.json({
+                result: response,
+                message: "Your profile",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
+        }
 
     }
 
