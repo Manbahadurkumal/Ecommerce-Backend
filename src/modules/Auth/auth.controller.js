@@ -143,8 +143,20 @@ class AuthController{
         }
 
     }
+    adminAccess = async (req, res, next) =>{
+        try{
+            res.json({
+                result: "I am only accessed by admin",
+                message: "Admin only",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
+        }
+    }
 
 }
+
 
 const authCtrl = new AuthController()
 module.exports = authCtrl;

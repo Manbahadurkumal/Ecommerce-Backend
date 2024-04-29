@@ -7,7 +7,7 @@ const server = http.createServer(app); //server application
 //ftp 21, sftp 22, mysql: 3306, postgres 5432, mongodb 27017
 server.listen(9012, '127.0.0.1',(err)=>{
     if(!err){
-        console.log("server is running...")
+        console.log("server is running....")
         console.log("Press CTRL + C to disconnect Server...")
     }
 })

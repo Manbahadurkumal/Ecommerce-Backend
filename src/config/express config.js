@@ -51,6 +51,17 @@ app.use((error, req, res, next)=>{
             data[errorObj.context.label] = errorObj.message
         })}
     }
+    //error message // uniqueness failed
+
+    if(+statusCode === 11000){
+        statusCode = 400
+        const fields = object.keys(error.keyPattern) // ['email']
+        fields.map((fieldname)=>{
+            data[fieldname] = fieldname + "should be unique"
+        })
+        msg = "Validation Failed"
+
+    }
     //error response
     res.status(statusCode).json({          
         //error code 422 ==> pass object in result

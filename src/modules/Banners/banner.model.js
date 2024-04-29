@@ -1,4 +1,4 @@
-// banners.model.js
+// banner.model.js
 
 const mongoose = require('mongoose');
 
@@ -8,11 +8,14 @@ const bannerSchema = new Schema({
   title: { type: String, required: true },
   link: { type: String },
   status: { type: String, enum: ['inactive', 'active'], default: 'inactive' },
-  image: { type: String },
-  createdBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-  createdAt: { type: Date, default: Date.now },
-  updatedBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-  updatedAt: { type: Date, default: Date.now },
+  image: { type: String, required: true },
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'User', default: null },
+  updatedBy: { type: mongoose.Types.ObjectId, ref: 'User', default: null },
+},{
+  timestamps: true,
+  autoCreate: true,
+  autoIndex: true
+
 });
 
 const BannerModel = mongoose.model('Banner', bannerSchema);
