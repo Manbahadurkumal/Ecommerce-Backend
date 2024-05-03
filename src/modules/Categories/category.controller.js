@@ -1,14 +1,14 @@
-const bannerSvc = require("./banner.service")
+const categorySvc = require("./category.service")
 
-class BannerController{
+class CategoryController{
     
     create = async (req, res, next) =>{
         try{
-            const payload = bannerSvc.transformCreateData(req);
-            const createdBanner = await bannerSvc.store(payload) //to store in data base
+            const payload = categorySvc.transformCreateData(req);
+            const createdCategory = await categorySvc.transformCreateData(payload)
             res.json({
-                result: createdBanner,
-                message: "Banner Created Successfully",
+                result: createdCategory,
+                message: "Category Created Successfully",
                 meta: null
             })
 
@@ -19,7 +19,6 @@ class BannerController{
 
     index = async(req, res, next) =>{
         try{
-            //optimization of solutin ==> pagination
             const page = +req.query.page || 1;
             const limit = +req.query.limit || 15;
             const skip = (page - 1) * limit;
@@ -27,25 +26,25 @@ class BannerController{
             let filter = {};
             //search
             if(req.query.search){
-                //?search=banner
+                //?search=category
                 filter = {
                     title: new RegExp(req.query.search, 'i')
 
                 }
             }
 
-            const data = await bannerSvc.listAll({
+            const data = await categorySvc.listAll({
                 limit: limit,
                 skip: skip,
                 filter: filter
-            })
-            const countData = await bannerSvc.count({
+            });
+            const countData = await categorySvc.count({
                 filter: filter
             })
             res.json({
                 result: data,
-                message: "Banner List",
-                meta: {
+                message: "category List",
+                meta:   {
                     limit: limit,
                     page: page,
                     total: countData
@@ -58,12 +57,12 @@ class BannerController{
     
     show = async(req, res, next) =>{
         try{
-            const detail = await bannerSvc.findOne({
+            const detail = await categorySvc.findOne({
                 _id: req.params.id
             })
             res.json({
                 result: detail,
-                message: "Banner Detail fetched",
+                message: "Category Detail fetched",
                 meta: null
             })
 
@@ -74,11 +73,11 @@ class BannerController{
 
     update = async(req,res, next) =>{
         try{
-            const existingData = await bannerSvc.findOne({
+            const existingData = await categorySvc.findOne({
                 _id: req.params.id
             })
-            const payload = bannerSvc.transformUpdateData(req, existingData)
-            const updateStatus = await bannerSvc.update({_id: req.params.id}, payload)
+            const payload = categorySvc.transformUpdateData(req, existingData);
+            const updateStatus = await categorySvc.update({_id: req.params.id}, payload)
             res.json({
                 result: updateStatus,
                 message: "Data updated",
@@ -90,24 +89,23 @@ class BannerController{
     }
     delete = async (req, res, next) =>{
         try{
-            const exists = await bannerSvc.findOne({_id: req.params.id})
-            const status = await bannerSvc.deleteOne({_id: req.params.id})
+            await categorySvc.findOne({_id: req.params.id})
+            const status = await categorySvc.deleteOne({_id: req.params.id})
             res.json({
                 result: status,
-                message: "Banner deleted successfully",
+                message: "Category deleted successfully",
                 meta: null
             })
-
         }catch(exception){
             throw exception
         }
     }
     listForHome = async(req, res, next) =>{
         try{
-            const list = await bannerSvc.getForHome()
+            const list = await categorySvc.getForHome()
             res.json({
                 result: list,
-                message: "Banner listed successfully",
+                message: "Category listed successfully",
                 meta: null
             })
         }catch(exception){
@@ -115,5 +113,5 @@ class BannerController{
         }
     }
 }
-const bannerCtrl = new BannerController()
-module.exports = bannerCtrl
+const categoryCtrl = new CategoryController()
+module.exports = categoryCtrl

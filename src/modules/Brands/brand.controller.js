@@ -1,14 +1,14 @@
-const bannerSvc = require("./banner.service")
+const brandSvc = require("./brand.service")
 
-class BannerController{
+class BrandController{
     
     create = async (req, res, next) =>{
         try{
-            const payload = bannerSvc.transformCreateData(req);
-            const createdBanner = await bannerSvc.store(payload) //to store in data base
+            const payload = brandSvc.transformCreateData(req);
+            const createdBrand = await brandSvc.store(payload) //to store in data base
             res.json({
-                result: createdBanner,
-                message: "Banner Created Successfully",
+                result: createdBrand,
+                message: "Brand Created Successfully",
                 meta: null
             })
 
@@ -27,24 +27,24 @@ class BannerController{
             let filter = {};
             //search
             if(req.query.search){
-                //?search=banner
+                //?search=brand
                 filter = {
                     title: new RegExp(req.query.search, 'i')
 
                 }
             }
 
-            const data = await bannerSvc.listAll({
+            const data = await brandSvc.listAll({
                 limit: limit,
                 skip: skip,
                 filter: filter
             })
-            const countData = await bannerSvc.count({
+            const countData = await brandSvc.count({
                 filter: filter
             })
             res.json({
                 result: data,
-                message: "Banner List",
+                message: "Brand List",
                 meta: {
                     limit: limit,
                     page: page,
@@ -58,12 +58,12 @@ class BannerController{
     
     show = async(req, res, next) =>{
         try{
-            const detail = await bannerSvc.findOne({
+            const detail = await brandSvc.findOne({
                 _id: req.params.id
             })
             res.json({
                 result: detail,
-                message: "Banner Detail fetched",
+                message: "Brand Detail fetched",
                 meta: null
             })
 
@@ -74,11 +74,11 @@ class BannerController{
 
     update = async(req,res, next) =>{
         try{
-            const existingData = await bannerSvc.findOne({
+            const existingData = await brandSvc.findOne({
                 _id: req.params.id
             })
-            const payload = bannerSvc.transformUpdateData(req, existingData)
-            const updateStatus = await bannerSvc.update({_id: req.params.id}, payload)
+            const payload = brandSvc.transformUpdateData(req, existingData)
+            const updateStatus = await brandSvc.update({_id: req.params.id}, payload)
             res.json({
                 result: updateStatus,
                 message: "Data updated",
@@ -90,11 +90,11 @@ class BannerController{
     }
     delete = async (req, res, next) =>{
         try{
-            const exists = await bannerSvc.findOne({_id: req.params.id})
-            const status = await bannerSvc.deleteOne({_id: req.params.id})
+            const exists = await brandSvc.findOne({_id: req.params.id})
+            const status = await brandSvc.deleteOne({_id: req.params.id})
             res.json({
                 result: status,
-                message: "Banner deleted successfully",
+                message: "Brand deleted successfully",
                 meta: null
             })
 
@@ -104,10 +104,10 @@ class BannerController{
     }
     listForHome = async(req, res, next) =>{
         try{
-            const list = await bannerSvc.getForHome()
+            const list = await brandSvc.getForHome()
             res.json({
                 result: list,
-                message: "Banner listed successfully",
+                message: "Brand listed successfully",
                 meta: null
             })
         }catch(exception){
@@ -115,5 +115,5 @@ class BannerController{
         }
     }
 }
-const bannerCtrl = new BannerController()
-module.exports = bannerCtrl
+const brandCtrl = new BrandController()
+module.exports = brandCtrl

@@ -1,14 +1,14 @@
-const bannerSvc = require("./banner.service")
+const productSvc = require("./product.service")
 
-class BannerController{
+class ProductController{
     
     create = async (req, res, next) =>{
         try{
-            const payload = bannerSvc.transformCreateData(req);
-            const createdBanner = await bannerSvc.transformCreateData(payload)
+            const payload = await productSvc.transformCreateData(req);
+            const createdProduct = await productSvc.store(payload) //to store in data base
             res.json({
-                result: createdBanner,
-                message: "Banner Created Successfully",
+                result: createdProduct,
+                message: "Product Created Successfully",
                 meta: null
             })
 
@@ -19,6 +19,7 @@ class BannerController{
 
     index = async(req, res, next) =>{
         try{
+            //optimization of solutin ==> pagination
             const page = +req.query.page || 1;
             const limit = +req.query.limit || 15;
             const skip = (page - 1) * limit;
@@ -26,25 +27,25 @@ class BannerController{
             let filter = {};
             //search
             if(req.query.search){
-                //?search=banner
+                //?search=product
                 filter = {
                     title: new RegExp(req.query.search, 'i')
 
                 }
             }
 
-            const data = await bannerSvc.listAll({
+            const data = await productSvc.listAll({
                 limit: limit,
                 skip: skip,
                 filter: filter
-            });
-            const countData = await bannerSvc.count({
+            })
+            const countData = await productSvc.count({
                 filter: filter
             })
             res.json({
                 result: data,
-                message: "Banner List",
-                meta:   {
+                message: "Product List",
+                meta: {
                     limit: limit,
                     page: page,
                     total: countData
@@ -57,12 +58,12 @@ class BannerController{
     
     show = async(req, res, next) =>{
         try{
-            const detail = await bannerSvc.findOne({
+            const detail = await productSvc.findOne({
                 _id: req.params.id
             })
             res.json({
                 result: detail,
-                message: "Banner Detail fetched",
+                message: "Product Detail fetched",
                 meta: null
             })
 
@@ -73,11 +74,11 @@ class BannerController{
 
     update = async(req,res, next) =>{
         try{
-            const existingData = await bannerSvc.findOne({
+            const existingData = await productSvc.findOne({
                 _id: req.params.id
             })
-            const payload = bannerSvc.transformUpdateData(req, existingData);
-            const updateStatus = await bannerSvc.update({_id: req.params.id}, payload)
+            const payload = productSvc.transformUpdateData(req, existingData)
+            const updateStatus = await productSvc.update({_id: req.params.id}, payload)
             res.json({
                 result: updateStatus,
                 message: "Data updated",
@@ -89,13 +90,30 @@ class BannerController{
     }
     delete = async (req, res, next) =>{
         try{
-            const exists = await bannerSvc.findOne({_id: req.params.id})
-            const status = await bannerSvc.deleteOne({_id: req.params.id})
+            const exists = await productSvc.findOne({_id: req.params.id})
+            const status = await productSvc.deleteOne({_id: req.params.id})
+            res.json({
+                result: status,
+                message: "Product deleted successfully",
+                meta: null
+            })
 
         }catch(exception){
             throw exception
         }
     }
+    listForHome = async(req, res, next) =>{
+        try{
+            const list = await productSvc.getForHome()
+            res.json({
+                result: list,
+                message: "Product listed successfully",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
+        }
+    }
 }
-const bannerCtrl = new BannerController()
-module.exports = bannerCtrl
+const productCtrl = new ProductController()
+module.exports = productCtrl

@@ -7,42 +7,68 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
   title: { 
     type: String, 
-    unique: true 
+    required: true,
+    min: 2
     },
   slug: {
     type: String, 
     unique: true 
     },
-  summary: String,
+  summary: {
+    type: String,
+    required: true
+  },
   description: String ,
-  categories: { 
+  price: {
+    type: Number,
+    min: 100,
+    required: true
+  },
+  discount: {
+    type: Number,
+    min: 0,
+    max: 90,
+    default: 0
+  },
+  afterDiscount: {
+    type: Number,
+    min: 0,
+    required: true
+  },
+  categoryId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Product",
+    defalut: null
+  },
+  // stock: Number,
+  // sku: String,
+  sellerId: { 
+    type: mongoose.Types.ObjectId, 
+    ref: 'User',
+    default: null 
+    },
+  brand: {
+    type: mongoose.Types.ObjectId,
+    ref: "Brand",
+    default: null
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  categories: [{ 
     type: mongoose.Types.ObjectId, 
     ref: 'Category', 
     default: null
-    },
-  price: Number,
-  discount: Number,
-  afterDiscount: Number,
-  brand: { 
-    type: mongoose.Types.ObjectId, 
-    ref: 'Brand' 
-    },
-  stock: Number,
-  sku: String,
-  featured: { 
-    type: Boolean, 
-    default: false 
-    },
-  seller: { 
-    type: mongoose.Types.ObjectId, 
-    ref: 'User' 
-    },
+    }],
   status: { 
     type: String, 
     enum: ['inactive', 'active'], 
     default: 'inactive' 
     },
-  image: { type: String },
+  images: [{
+    type: String,
+   }],
   createdBy: { 
     type: mongoose.Types.ObjectId, 
     ref: 'User', 
@@ -52,9 +78,8 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId, 
     ref: 'User', 
     default: null 
-    }, 
-    },
-    {
+  }, 
+}, {
     timestamps: true,   //createdAt, updatedAt keys are auto added
     autoCreate: true,   //create the table
     autoIndex: true     //indexing

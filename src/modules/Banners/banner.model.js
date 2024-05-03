@@ -2,10 +2,8 @@
 
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-
-const bannerSchema = new Schema({
-  title: { type: String, required: true },
+const bannerSchema = new mongoose.Schema({
+  title: { type: String, required: true, min:3 },
   link: { type: String },
   status: { type: String, enum: ['inactive', 'active'], default: 'inactive' },
   image: { type: String, required: true },

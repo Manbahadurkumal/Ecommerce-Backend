@@ -1,11 +1,12 @@
 // categories.model.js
-
 const mongoose = require('mongoose');
 
 
 const categorySchema = new mongoose.Schema({
   title: { 
-    type: String, 
+    type: String,
+    required: true,
+    min: 2, 
     unique: true 
     },
   slug: { 

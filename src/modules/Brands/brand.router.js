@@ -2,45 +2,46 @@ const auth = require("../../middleware/auth.middleware");
 const allowRole = require("../../middleware/rbac.middleware");
 const { setPath, uploader } = require("../../middleware/uploader.middleware");
 const { bodyValidator } = require("../../middleware/validator.middleware");
-const bannerCtrl = require("./banner.controller");
-const { BannerCreateDTO, BannerUpdateDTO } = require("./banner.dto");
+const brandCtrl = require("./brand.controller");
+const { BrandCreateDTO, BrandUpdateDTO } = require("./brand.dto");
 
 const router = require("express").Router()
 
-router.get('/home-list', bannerCtrl.listForHome);
+router.get('/home-list', brandCtrl.listForHome);
+
 router.route('/')
     .post(
         auth, 
         allowRole('admin'), 
-        setPath('banners'), 
+        setPath('brands'), 
         uploader.single('image'), 
-        bodyValidator(BannerCreateDTO, ['image']),
-        bannerCtrl.create
+        bodyValidator(BrandCreateDTO, ['image']),
+        brandCtrl.create
     )// create 
     .get(
         auth,
         allowRole("admin"),
-        bannerCtrl.index
+        brandCtrl.index
     );//list all
 
 router.route('/:id')
     .get(
         auth,
         allowRole('admin'),
-        bannerCtrl.show
+        brandCtrl.show
     )// show detail
     .put(
         auth,
         allowRole('admin'),
-        setPath('banners'),
+        setPath('brands'),
         uploader.single('image'),
-        bodyValidator(BannerUpdateDTO, ['image']),
-        bannerCtrl.update
+        bodyValidator(BrandUpdateDTO, ['image']),
+        brandCtrl.update
     )//partial updates   --<>--Patch==>replace the entire resource 
     .delete(
         auth,
         allowRole('admin'),
-        bannerCtrl.delete
+        brandCtrl.delete
     )//delete
 
 module.exports = router;

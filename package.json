@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
+  "description": "-Auth module \r     -register \r         ->/register post\r     -Activate\r         ->/activate/token->get\r     -Login\r         ->/login => post \r     -Profile\r         ->after login / me =>get\r     -Change password\r         ->after login/ change-passoword ->post\r     -Logout\r         ->after login/logout =>get\r     -Forget password\r         ->request for password =>post/forget-password\r     -Reset password \r         ->post/reset-password",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -20,6 +20,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.13"
-  }
+    "nodemailer": "^6.9.13",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {}
 }

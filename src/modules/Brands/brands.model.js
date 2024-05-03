@@ -2,18 +2,21 @@
 
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-
-const brandSchema = new Schema({
-  title: { type: String, unique: true },
+const brandSchema = new mongoose.Schema({
+  title: { type: String, unique: true, min:2, unique: true },
   slug: { type: String, unique: true },
   status: { type: String, enum: ['inactive', 'active'], default: 'inactive' },
-  image: { type: String },
+  image: { type: String, reqired: true },
   homeSection: { type: Boolean, default: false },
-  createdBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-  createdAt: { type: Date, default: Date.now },
-  updatedBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
-  updatedAt: { type: Date, default: Date.now },
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'User', default: null }, 
+  updatedBy: { type: mongoose.Types.ObjectId, ref: 'User', default: null },
+  
+},
+{
+  timestamps: true,
+  autoCreate: true,
+  autoIndex: true
+
 });
 
 const BrandModel = mongoose.model('Brand', brandSchema);
