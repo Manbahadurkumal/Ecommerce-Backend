@@ -3,11 +3,11 @@ const allowRole = require("../../middleware/rbac.middleware");
 const { setPath, uploader } = require("../../middleware/uploader.middleware");
 const { bodyValidator } = require("../../middleware/validator.middleware");
 const categoryCtrl = require("./category.controller");
-const { categoryCreateDTO, CategoryUpdateDTO } = require("./category.dto");
+const { categoryCreateDTO, categoryUpdateDTO } = require("./category.dto");
 
 const router = require("express").Router()
 router.get('/home-list', categoryCtrl.listForHome);
-
+router.get('/:slug/detail', categoryCtrl.getCategoryBySlug)
 router.route('/')
     .post(
         auth, 
@@ -34,7 +34,7 @@ router.route('/:id')
         allowRole('admin'),
         setPath('category'),
         uploader.single('image'),
-        bodyValidator(CategoryUpdateDTO, ['image']),
+        bodyValidator(categoryUpdateDTO, ['image']),
         categoryCtrl.update
     )
     .delete(

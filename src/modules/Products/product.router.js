@@ -8,30 +8,31 @@ const { ProductCreateDTO, ProductUpdateDTO } = require("./product.dto");
 const router = require("express").Router()
 
 router.get('/home-list', productCtrl.listForHome);
+router.get("/:slug/detail", productCtrl.getProductDetailBySlug)
 router.route('/')
     .post(
         auth, 
-        allowRole('admin'), 
-        setPath('product'), 
+        allowRole(['admin', 'seller']), 
+        setPath('products'), 
         uploader.array('images'), 
         bodyValidator(ProductCreateDTO),
         productCtrl.create
     )
     .get(
         auth,
-        allowRole("admin"),
+        allowRole(["admin", 'seller']),
         productCtrl.index
     );
 
 router.route('/:id')
     .get(
         auth,
-        allowRole('admin'),
+        allowRole(['admin', 'seller']),
         productCtrl.show
     )
     .put(
         auth,
-        allowRole('admin'),
+        allowRole(['admin', 'seller']),
         setPath('product'),
         uploader.array('images'),
         bodyValidator(ProductUpdateDTO, ['images']),
@@ -39,7 +40,7 @@ router.route('/:id')
     )
     .delete(
         auth,
-        allowRole('admin'),
+        allowRole(['admin', 'seller']),
         productCtrl.delete
     )
 

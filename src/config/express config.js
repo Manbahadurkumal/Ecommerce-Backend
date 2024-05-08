@@ -53,7 +53,7 @@ app.use((error, req, res, next)=>{
     }
     //error message // uniqueness failed
 
-    if(statusCode === 11000){
+    if(+statusCode === 11000){
         statusCode = 400
         const fields = Object.keys(error.keyPattern) // ['email']
         fields.map((fieldname)=>{

@@ -10,8 +10,8 @@ class ProductService {
             if(productExists){
                 //not unique
                 const time = Date.now()
-                slug = slug+ "-"+ time;
-                await this.uniqueSlug(slug)
+                slug = slug + "-" + time;
+                return await this.uniqueSlug(slug)
 
             }else{
                 //unique
@@ -28,7 +28,7 @@ class ProductService {
             const data = {
                 ...req.body
             }
-            if(req.file){
+            if(req.files){
                 let images = []
                 req.files.map((image) =>{
                     images.push(image.filename);
@@ -37,9 +37,13 @@ class ProductService {
             }else{
                 data.images = null;
             }
-            
+            let slug = slugify (data.title, {
+                lower: true
+            })
+            slug = await this.uniqueSlug(slug)
+            data.slug = slug
+
             data.afterDiscount = data.price - data.price* data.discount / 100
-    
             //brand set null if not present
     
             if(!data.brand || data.brand === "null" || data.brand ===""){
@@ -53,7 +57,12 @@ class ProductService {
             // Categories set nul if not present
             if(!data.categories || data.categories === "null" || data.categories ===""){
                 data.categories = null;
-            }    
+            }
+            if(req.authUser.role === 'seller'){
+                data.sellerId = req.authUser._id;
+                //
+                data.status = "inactive";
+            } 
             data.createdBy = req.authUser._id;
             return data;
 
@@ -65,8 +74,12 @@ class ProductService {
         const data = {
             ...req.body
         }
-        let images = [...existingData.images]
-        if(req.file){
+        let images = [];
+
+    if (existingData.images) {
+        images = [...existingData.images];
+    }
+        if(req.files){
             
             req.files.map((image) =>{
                 images.push(image.filename);
@@ -113,7 +126,7 @@ class ProductService {
     listAll = async ({limit, skip, filter={}}) =>{
         try{
             const response = await ProductModel.find(filter)
-            .populate("catogries", ["_id", "title", "slug"])
+            .populate("categories", ["_id", "title", "slug"])
             .populate("brand", ["_id", "title", "slug"])
             .populate("sellerId", ["_id", "name", "email","role"])
             .populate("createdBy", ["_id", "name", "email", "role"])
@@ -130,7 +143,7 @@ class ProductService {
     findOne = async (filter) =>{
         try{
             const data = await ProductModel.findOne(filter)
-            .populate("catogries", ["_id", "title", "slug"])
+            .populate("categories", ["_id", "title", "slug"])
             .populate("brand", ["_id", "title", "slug"])
             .populate("sellerId", ["_id", "name", "email","role"])
             .populate("createdBy", ["_id", "name", "email", "role"])
@@ -171,7 +184,7 @@ class ProductService {
             const data = await ProductModel.find({
                 status: "active",
             })
-            .populate("catogries", ["_id", "title", "slug"])
+            .populate("categories", ["_id", "title", "slug"])
             .populate("brand", ["_id", "title", "slug"])
             .populate("sellerId", ["_id", "name", "email","role"])
             .populate("createdBy", ["_id", "name", "email", "role"])

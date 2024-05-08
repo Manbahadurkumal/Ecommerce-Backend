@@ -4,6 +4,7 @@ class ProductController{
     
     create = async (req, res, next) =>{
         try{
+            
             const payload = await productSvc.transformCreateData(req);
             const createdProduct = await productSvc.store(payload) //to store in data base
             res.json({
@@ -25,12 +26,21 @@ class ProductController{
             const skip = (page - 1) * limit;
 
             let filter = {};
+            const loggedInUser = req.authUser;
+
             //search
             if(req.query.search){
                 //?search=product
                 filter = {
                     title: new RegExp(req.query.search, 'i')
 
+                }
+            }
+            //seller filter
+            if(loggedInUser.role === 'seller'){
+                filter = {
+                    ...filter,
+                    sellerId: loggedInUser._id
                 }
             }
 
@@ -58,9 +68,17 @@ class ProductController{
     
     show = async(req, res, next) =>{
         try{
-            const detail = await productSvc.findOne({
-                _id: req.params.id
-            })
+            const loggedInUser = req.authUser;
+            let filter = {
+                _id: req.params.id,
+            }
+            if (loggedInUser.role === 'seller'){
+                filter = {
+                    ...filter,
+                    sellerId: loggedInUser._id
+                }
+            }
+            const detail = await productSvc.findOne(filter)
             res.json({
                 result: detail,
                 message: "Product Detail fetched",
@@ -74,9 +92,17 @@ class ProductController{
 
     update = async(req,res, next) =>{
         try{
-            const existingData = await productSvc.findOne({
-                _id: req.params.id
-            })
+            const loggedInUser = req.authUser;
+            let filter = {
+                _id: req.params.id,
+            }
+            if (loggedInUser.role === 'seller'){
+                filter = {
+                    ...filter,
+                    sellerId: loggedInUser._id
+                }
+            }
+            const existingData = await productSvc.findOne(filter)
             const payload = productSvc.transformUpdateData(req, existingData)
             const updateStatus = await productSvc.update({_id: req.params.id}, payload)
             res.json({
@@ -90,7 +116,17 @@ class ProductController{
     }
     delete = async (req, res, next) =>{
         try{
-            const exists = await productSvc.findOne({_id: req.params.id})
+            const loggedInUser = req.authUser;
+            let filter = {
+                _id: req.params.id,
+            }
+            if (loggedInUser.role === 'seller'){
+                filter = {
+                    ...filter,
+                    sellerId: loggedInUser._id
+                }
+            }
+            await productSvc.findOne(filter)
             const status = await productSvc.deleteOne({_id: req.params.id})
             res.json({
                 result: status,
@@ -110,6 +146,34 @@ class ProductController{
                 message: "Product listed successfully",
                 meta: null
             })
+        }catch(exception){
+            next(exception)
+        }
+    }
+    getProductDetailBySlug = async(req, res, next) =>{
+        try{
+            const slug = req.params.slug;
+            const filter = {
+                slug: slug,
+                status: "active"
+            }
+            const productDetail = await productSvc.findOne(filter);
+            const relatedFilter = {
+                categories: {$in: productDetail.categories},
+                _id: {$ne: productDetail._id}
+            }
+            const relatedProducts = await productSvc.listAll({limit: 10, skip: 0, filter:relatedFilter})
+
+
+            res.json({
+                result: {
+                    detail: productDetail,
+                    relatedProduct: relatedProducts
+                },
+                message: "Product List",
+                meta: null
+            })
+
         }catch(exception){
             next(exception)
         }

@@ -30,9 +30,7 @@ class CategoryService {
             data.image = existingData.image
 
         }
-        
-
-        if(!data.parentId || data.parentID === 'null' || data.parentId ===""){
+        if(!data.parentId || data.parentId === 'null' || data.parentId ===""){
             data.parentId = null;
         }
         data.updatedBy = req.authUser._id;

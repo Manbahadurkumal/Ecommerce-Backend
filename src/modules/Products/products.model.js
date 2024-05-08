@@ -35,11 +35,11 @@ const productSchema = new mongoose.Schema({
     min: 0,
     required: true
   },
-  categoryId: {
-    type: mongoose.Types.ObjectId,
-    ref: "Product",
-    defalut: null
-  },
+  // categoryId: {
+  //   type: mongoose.Types.ObjectId,
+  //   ref: "Product",
+  //   defalut: null
+  // },
   // stock: Number,
   // sku: String,
   sellerId: { 

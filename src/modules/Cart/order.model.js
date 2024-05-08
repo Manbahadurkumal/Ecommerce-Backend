@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   buyerId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
-  orderDate: { type: Date, default: Date.now },
-  cartDetail: { type: mongoose.Types.ObjectId, ref: 'CartDetail', required: true },
+  // orderDate: { type: Date, default: Date.now },
+  cartDetail: [{ type: mongoose.Types.ObjectId, ref: 'CartDetail', required: true }],
   subTotal: { type: Number },
-  discount: { type: Number, min: 0,max: 90, default: null },
+  discountAmt: { type: Number, min: 0, default: 0 },
+  discountPer: { type: Number, min: 0, default: 0 },
+
   // tax: { type: Number },
   deliveryCharge: { type: Number, min: 100, default: 100 },
   totalAmount: { type: Number, min: 0, default: 0 },
@@ -20,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'processing', 'cancelled', 'confirmed', 'delivered'],
+    enum: ['pending', 'cancelled', 'confirmed', 'delivered'],
     default: 'pending',
   },
   createdBy: { type: mongoose.Types.ObjectId, ref: 'User', default: null },

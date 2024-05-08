@@ -1,13 +1,13 @@
 
 const mongoose = require("mongoose");
 
-const AddressSchema = new mongoose.Schema({
-    houseNo: String,
-    streetNo: String,
-    ruralDev: String,
-    district: String,
-    province: String
-});
+// const AddressSchema = new mongoose.Schema({
+//     houseNo: String,
+//     streetNo: String,
+//     ruralDev: String,
+//     district: String,
+//     province: String
+// });
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -39,12 +39,12 @@ const UserSchema = new mongoose.Schema({
         enum: ['active', 'inactive'],
         default: "inactive"
     },
-    phone: String,
-    image: String,
-    address: {
-        shippingAddress: AddressSchema,
-        billingAddress: AddressSchema
-    },
+    // phone: String,
+    // image: String,
+    // address: {
+    //     shippingAddress: AddressSchema,
+    //     billingAddress: AddressSchema
+    // },
     createdBy:{
         type: mongoose.Types.ObjectId,
         ref: "User",
