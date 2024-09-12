@@ -17,7 +17,7 @@ app.use(express.urlencoded({
 }))
 
 //static middleware
-app.use('/assets', express.static('./public/images'))
+app.use('/assets', express.static('./public/'))
 app.get('/health', (req, res, next)=>{
     //res.end("hello")
     res.json({

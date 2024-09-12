@@ -106,13 +106,13 @@ class AuthController{
                 throw{code: 400, message: "Token does not exists"}
             }
             const updateResult = await authSvc.updateUser({
-                activatationToken: null,
+                activationToken: null,
                 status: "active"
             }, associatedUser._id)
             res.json({
                 result: updateResult,
                 message: "your account has been activated successfully",
-                meata: null
+                meta: null
             })
         }catch(exception){
             next(exception)

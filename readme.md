@@ -3,7 +3,7 @@
     -register 
         ->/register post
     -Activate
-        ->/activate/token->get
+        ->/:token/activate->get
     -Login
         ->/login => post 
     -Profile

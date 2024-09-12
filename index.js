@@ -1,6 +1,21 @@
 const http = require('http')
+
+const {Server} = require("socket.io")
 const app = require("./src/config/express config")
 const server = http.createServer(app); //server application
+
+const io = new Server(server, {
+    cors: "*"
+})
+
+// socket is event based
+//on is to listen
+io.on("connection", (socket)=>{   
+    socket.on("new-message", (data) =>{
+        socket.emit("message-received", data)
+    })
+    // console.log("Socket Connected ....", socket.id   )
+})
 // 0-65535
 //~100 port
 // http => 80, https: 443, sstp =>25, 2525, 465, 587
