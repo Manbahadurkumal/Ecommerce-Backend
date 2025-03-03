@@ -212,7 +212,9 @@ prottocol  ===>mongodb, mongodb+srv
 host       ===>localhost, 127.0.0.1, <cluster hostaddress>
 port       ===>27017
 user       ===>not required for localhost, at las --->ManBahadurKumal
+----> Manish
 password   ===>not required for localhost, at las --->db pwd
+--->9pxKkLZuDWrnFz1p
 db         ===>your dbname
 
 synopsis ==>structure

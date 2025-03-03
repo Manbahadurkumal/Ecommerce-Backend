@@ -12,5 +12,5 @@ authRoute.get("/activate/:token", authCtrl.activate)
 authRoute.post('/login', bodyValidator(loginDTO), authCtrl.login)
 authRoute.get('/me', auth, authCtrl.getLoggedIn)
 authRoute.get('/admin', auth, allowRole('admin'), authCtrl.adminAccess)
-
+authRoute.get('/logout',auth, authCtrl.logout)
 module.exports = authRoute

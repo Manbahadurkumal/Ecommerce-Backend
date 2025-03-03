@@ -41,7 +41,7 @@ class AuthController{
         }
         
     }
-    login = async    (req, res, next)=>{
+    login = async(req, res, next)=>{
         try{
             const { email, password} = req.body;
             const userDetail = await authSvc.findOneUser({
@@ -116,6 +116,14 @@ class AuthController{
             })
         }catch(exception){
             next(exception)
+        }
+    }
+    logout = (req, res, next) =>{
+        try{
+            loggedInUser = null
+            res.status(200).json({ message: "Logged out successfully." });
+        }catch(exception){
+            res.status(500).json({ message: "Error logging out." });
         }
     }
     getLoggedIn = async(req, res, next)=>{
