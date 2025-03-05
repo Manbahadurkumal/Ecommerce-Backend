@@ -3,7 +3,8 @@ const http = require('http')
 const {Server} = require("socket.io")
 const app = require("./src/config/express config")
 const server = http.createServer(app); //server application
-
+require("dotenv").config()
+const mongoose = require("mongoose")
 const io = new Server(server, {
     cors: "*"
 })
@@ -15,6 +16,20 @@ io.on("connection", (socket)=>{
         socket.emit("message-received", data)
     })
     // console.log("Socket Connected ....", socket.id   )
+})
+
+
+mongoose.connect(process.env.MONGO_DB_URL,{
+    dbName: process.env.MONGO_DB_NAME,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+}).then(() =>{
+    console.log("MOngo db connected successfully...")
+
+})
+.catch((err) =>{
+    console.log("error while connecting Mongodb...")
+    process.exit(1)
 })
 // PORT = process.env.PORT
 server.listen((err)=>{
