@@ -16,8 +16,8 @@ io.on("connection", (socket)=>{
     })
     // console.log("Socket Connected ....", socket.id   )
 })
-PORT = process.env.PORT
-server.listen(PORT, (err)=>{
+// PORT = process.env.PORT
+server.listen((err)=>{
     if(!err){
                 console.log("server is running....")
                 console.log("Press CTRL + C to disconnect Server...")
