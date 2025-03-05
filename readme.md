@@ -213,8 +213,11 @@ host       ===>localhost, 127.0.0.1, <cluster hostaddress>
 port       ===>27017
 user       ===>not required for localhost, at las --->ManBahadurKumal
 ----> Manish
+---->Manishkumal
 password   ===>not required for localhost, at las --->db pwd
 --->9pxKkLZuDWrnFz1p
+--->i4LEKIarF4uQpkSI
+--->W9OxIgYLgJueDQbz
 db         ===>your dbname
 
 synopsis ==>structure
